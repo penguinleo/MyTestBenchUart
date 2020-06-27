@@ -25,7 +25,9 @@ interface InterfaceDef (input clk, input rst);
     logic  [31:0]    	second_stamp;
     logic 				Rx;
     logic 				Tx;
+    JvnTransaction      JvnTr;
     modport CPU_Sim(
+        input   JvnTr,
     	output 	AddrBus,
     	output 	n_ChipSelect,
     	output 	n_rd,
@@ -37,4 +39,19 @@ interface InterfaceDef (input clk, input rst);
     	output 	millisecond_stamp,
     	output 	second_stamp
     	);
+    modport UartMonitor(
+        output  JvnTr,
+        input   AddrBus,
+        input   n_ChipSelect, 
+        input   n_rd, 
+        input   n_we, 
+        input   DataBusI, 
+        input   DataBusO, 
+        input   p_IrqSig, 
+        input   acqurate_stamp,
+        input   millisecond_stamp,
+        input   second_stamp,
+        input   Rx,
+        input   Tx
+        );
 endinterface

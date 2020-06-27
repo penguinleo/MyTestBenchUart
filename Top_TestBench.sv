@@ -8,30 +8,32 @@
 // Editor : sublime text3, tab size (4)
 // Comment: this module is designed to test the uart module 
 // Note:  
-// 
+// 		Top_testbench contain the DUT(module to be verified), the env( instantiation of the drivers)
+//  	The TestBench should contain: 
+// 									Top_testbench 	:
+// 									Env 			: 	Container for the drivers; 
+//  								Interface 		: 	Or named virtual interface. The interface between the DUT and the TestBenchs
+//  													Avoid spending massive working time on the interface updating when proj migration
+//  								Tansaction 		:  	
+//									Driver 			: 	The driver signal for the DUT
+//									Monitor 		: 	Monitor the important signals in the DUT and the testbench
+//									 
+// 		1, All drivers should be instantiated in the Env!
+// 		2, UVM is a huge set of class, all verification function should be established upon the Class defined in UVM.
+//  	3, Factory is a Macro definition denoted  as `uvm_component_utils, we use this macro difinition in instantiation of a "Class" and 
+// 			call the funtion and task defined in the Class 
 // -----------------------------------------------------------------------------   `timescale 1ns/1ps
 `timescale 1ns/1ps
 `include "uvm_macros.svh"
 import uvm_pkg::*;
-`include "SourceCode.h"
-`include "TestBenche.h"
+`include "SourceCode.h"   // Source code include file
+`include "TestBenche.h"   // Test bench code include file
 // `include "CPU_Sim.sv"
 module Top_TestBench;
 	reg clk;
 	reg rst;
+	// The interface definition call, for migration, updating the InterfaceDef.sv 
 	InterfaceDef SigDef(UartModule.clk, rst);
-	// reg   [3:0]    	AddrBus_r;
- //    reg            	n_ChipSelect_r;
- //    reg            	n_rd_r;        
- //    reg            	n_we_r;        
- //    reg   [7:0]    	DataBus_ir;     
- //    wire  [7:0]    	DataBus_ow;     
- //    wire           	p_IrqSig_w;  
- //    reg  [3:0]     	acqurate_stamp_r;
- //    reg  [11:0]    	millisecond_stamp_r;
- //    reg  [31:0]    	second_stamp_r;
- //    reg 			Rx_r;
- //    wire 			Tx_w;
 
 	UartCore UartModule(
 		.clk					(clk),
@@ -50,9 +52,9 @@ module Top_TestBench;
 		.Tx_o					(SigDef.Tx )
 		);
 	
-	initial begin : Driver
-		`uvm_info("CPU_Sim","is going to be called",UVM_LOW);
-		run_test("CPU_Sim");
+	initial begin : StartEnv  
+		`uvm_info("JvnEvn","is going to be called",UVM_LOW);
+		run_test("JvnEvn");   
 	end
 
 	initial begin : ClockSigGen
@@ -68,8 +70,9 @@ module Top_TestBench;
 		rst = 1'b1;
 	end
 
-	initial begin
-		uvm_config_db#(virtual InterfaceDef)::set(null, "uvm_test_top", "CpuSimInterface", SigDef);
+	initial begin : DataBindDescription
+		uvm_config_db#(virtual InterfaceDef)::set(null, "uvm_test_top.drv", "SigDef", SigDef);
+		uvm_config_db#(virtual InterfaceDef)::set(null, "uvm_test_top.mon", "SigMon", SigDef);
 	end
 
 
