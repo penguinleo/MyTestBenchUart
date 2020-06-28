@@ -32,10 +32,10 @@ class Driver0 extends uvm_driver#(JvnTransaction);
 endclass
 
 task Driver0::main_phase(uvm_phase phase);
+	JvnTransaction tr;
 	phase.raise_objection(this);
 	`uvm_info("Driver0","main_phase is called",UVM_LOW);
 	// @(posedge DvrSigDef.clk);
-	// JvnTransaction tr;
 	phase.drop_objection(this);
 endtask
 
