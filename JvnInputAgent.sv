@@ -12,17 +12,17 @@ class JvnInputAgent extends uvm_agent;
 	Driver0 drv;
 	JvnMonitor mon;
 	JvnSequencer sqr;
+	`uvm_component_utils(JvnInputAgent)
+	// uvm_analysis_port #(JvnTransaction) tr;
 	
-	uvm_analysis_port #(JvnTransaction) tr;
-	
-	function new( string name, uvm_component parent);
-		super.new(name,parent);		
+	function new( string name,uvm_component parent);
+		super.new(name,parent);	
 	endfunction
 
 	extern virtual function void build_phase(uvm_phase phase);
 	extern virtual function void connect_phase(uvm_phase phase);
 
-	`uvm_component_utils(JvnInputAgent)
+	
 endclass
 
 function void JvnInputAgent::build_phase (uvm_phase phase);
@@ -36,8 +36,8 @@ endfunction
 
 function void JvnInputAgent::connect_phase (uvm_phase phase);
 	super.connect_phase(phase);
-	if (is_active == UVM_ACTIVE) begin
-		drv.seq_item_port.connect(sqr.seq_item_export);
-	end
+	// if (is_active == UVM_ACTIVE) begin
+	// 	drv.seq_item_port.connect(sqr.seq_item_export);
+	// end
 	// tr = mon.MonSig.JvnTr;
 endfunction

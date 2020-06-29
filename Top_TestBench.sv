@@ -28,13 +28,13 @@
 import uvm_pkg::*;
 `include "SourceCode.h"   // Source code include file
 `include "TestBenche.h"   // Test bench code include file
-// `include "CPU_Sim.sv"
+// `include "CPU_Sim.sv"  JvnTransaction
 module Top_TestBench;
 	reg clk;
 	reg rst;
 	// The interface definition call, for migration, updating the InterfaceDef.sv 
 	InterfaceDef SigDef(UartModule.clk, rst);
-
+	// JvnEnv TestEnviron;
 	UartCore UartModule(
 		.clk					(clk),
 		.rst					(rst),
@@ -51,10 +51,9 @@ module Top_TestBench;
 		.Rx_i					(SigDef.Rx ),
 		.Tx_o					(SigDef.Tx )
 		);
-	
 	initial begin : StartEnv  
 		`uvm_info("JvnEvn","is going to be called",UVM_LOW);
-		run_test("JvnEvn");   
+		run_test("JvnEnv");   
 	end
 
 	initial begin : ClockSigGen
@@ -71,8 +70,9 @@ module Top_TestBench;
 	end
 
 	initial begin : DataBindDescription
-		uvm_config_db#(virtual InterfaceDef)::set(null, "uvm_test_top.drv", "SigDef", SigDef);
-		uvm_config_db#(virtual InterfaceDef)::set(null, "uvm_test_top.mon", "SigMon", SigDef);
+		`uvm_info("Top_TestBench","SigDef is going to be called",UVM_LOW);
+		uvm_config_db#(virtual InterfaceDef)::set(null, "uvm_test_top.agt.drv", "SigDef", SigDef);
+		uvm_config_db#(virtual InterfaceDef)::set(null, "uvm_test_top.agt.mon", "SigDef", SigDef);
 	end
 
 

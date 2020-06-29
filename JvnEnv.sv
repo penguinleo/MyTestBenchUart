@@ -12,8 +12,10 @@
 // -----------------------------------------------------------------------------   
 class JvnEnv extends uvm_env;
 	// CPU_Sim drv;   		// driver  instantiation in the env
+	
 	// UartMonitor mon; 	// monitor instantiation in the env
 	JvnInputAgent agt;
+	`uvm_component_utils(JvnEnv)
 	function new(string name = "JvnEnv", uvm_component parent);
 		super.new(name, parent);
 	endfunction
@@ -26,7 +28,7 @@ class JvnEnv extends uvm_env;
 		agt = JvnInputAgent::type_id::create("agt",this);
 		agt.is_active = UVM_ACTIVE;
 	endfunction
-	`uvm_component_utils(JvnEnv)
+	
 endclass
 	
 	task JvnEnv::main_phase (uvm_phase phase);

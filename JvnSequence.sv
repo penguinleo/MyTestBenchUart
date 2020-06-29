@@ -9,7 +9,9 @@
 // Comment: this module is designed to .....
 // -----------------------------------------------------------------------------   
 class JvnSequence extends uvm_sequence #(JvnTransaction);
+	
 	JvnTransaction trans;
+	`uvm_object_utils(JvnSequence)
 	function new (string name = "JvnSequence");
 		super.new(name);
 	endfunction
@@ -19,6 +21,6 @@ class JvnSequence extends uvm_sequence #(JvnTransaction);
 		end
 		#1000;
 	endtask
-
-	`uvm_object_utils(JvnSequence)
+	
+	
 endclass

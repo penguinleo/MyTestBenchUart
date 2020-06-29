@@ -11,8 +11,9 @@
 // 
 // -----------------------------------------------------------------------------   
 class Driver0 extends uvm_driver#(JvnTransaction);
-	`uvm_component_utils(Driver0)
+	
 	virtual InterfaceDef DvrSigDef;
+	`uvm_component_utils(Driver0)
 	// `uvm_info("CPU_Sim","new is called",UVM_LOW);
 	function new(string name = "Driver0", uvm_component parent = null);
 		super.new(name,parent);
@@ -36,6 +37,13 @@ task Driver0::main_phase(uvm_phase phase);
 	phase.raise_objection(this);
 	`uvm_info("Driver0","main_phase is called",UVM_LOW);
 	// @(posedge DvrSigDef.clk);
+	tr.AddrBus = 4'd0;
+	tr.n_ChipSelect = 1'b1;
+	tr.n_rd = 1'b1;
+	tr.n_we = 1'b1;
+	tr.DataBusI = 8'd0;
+	tr.Rx = 1'b1;
+	BusReadOutput(tr);
 	phase.drop_objection(this);
 endtask
 
